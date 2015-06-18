@@ -4,7 +4,7 @@
   <head>
     <title>Customize style</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
     <style>
       body {
         text-align: center;
@@ -114,6 +114,19 @@
           g5.refresh(getRandomInt(0, 100));
         }, 2500);
       };
+
+      var myFirebaseRef = new Firebase("https://mediadortv.firebaseio.com/");
+      
+      myFirebaseRef.on("value", function(snapshot) {
+        console.log(snapshot.val());
+      }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+      var pageRef = myFirebaseRef.child("nota_1");
+      pageRef.set({
+        aghh: 5,
+        mehh: 3
+      });
     </script>
 
 	</head>
