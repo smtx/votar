@@ -1,0 +1,127 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Customize style</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <style>
+      body {
+        text-align: center;
+      }
+
+      #g1, #g2, #g3, #g4, #g5, #g6 {
+        width:200px; height:160px;
+        display: inline-block;
+        margin: 1em;
+      }
+
+      p {
+        display: block;
+        width: 450px;
+        margin: 2em auto;
+        text-align: left;
+      }
+    </style>
+
+    <script src="js/raphael.2.1.0.min.js"></script>
+    <script src="js/justgage.1.0.1.min.js"></script>
+    <script>
+      var g1, g2, g3, g4, g5, g6;
+
+      window.onload = function(){
+      var g1 = new JustGage({
+        id: "g1",
+        value: getRandomInt(0, 100),
+        min: 0,
+        max: 100,
+        title: "AGHH",
+        label: "%",
+        showMinMax: false,
+        startAnimationTime: 2000,
+        startAnimationType: ">",
+        refreshAnimationTime: 1000,
+        refreshAnimationType: "bounce"
+
+      });
+
+      var g2 = new JustGage({
+        id: "g2",
+        value: getRandomInt(0, 100),
+        min: 0,
+        max: 100,
+        title: "BAD",
+        label: "%",
+        showMinMax: false,
+        startAnimationTime: 2000,
+        startAnimationType: ">",
+        refreshAnimationTime: 1000,
+        refreshAnimationType: "bounce"
+
+      });
+
+      var g3 = new JustGage({
+        id: "g3",
+        value: getRandomInt(0, 100),
+        min: 0,
+        max: 100,
+        title: "MEHHH",
+        label: "%",
+        showMinMax: false,
+        startAnimationTime: 2000,
+        startAnimationType: ">",
+        refreshAnimationTime: 1000,
+        refreshAnimationType: "bounce"
+
+      });
+
+      var g4 = new JustGage({
+        id: "g4",
+        value: getRandomInt(0, 100),
+        min: 0,
+        max: 100,
+        title: "YES!!",
+        label: "%",
+        showMinMax: false,
+        startAnimationTime: 2000,
+        startAnimationType: ">",
+        refreshAnimationTime: 1000,
+        refreshAnimationType: "bounce"
+
+      });
+
+
+      var g5 = new JustGage({
+        id: "g5",
+        value: getRandomInt(0, 100),
+        min: 0,
+        max: 100,
+        title: "AWESOME!!",
+        label: "%",
+        showMinMax: false,
+        startAnimationTime: 2000,
+        startAnimationType: ">",
+        refreshAnimationTime: 1000,
+        refreshAnimationType: "bounce"
+      });
+
+
+        setInterval(function() {
+          g1.refresh(getRandomInt(0, 100));
+          g2.refresh(getRandomInt(0, 100));
+          g3.refresh(getRandomInt(0, 100));
+          g4.refresh(getRandomInt(0, 100));
+          g5.refresh(getRandomInt(0, 100));
+        }, 2500);
+      };
+    </script>
+
+	</head>
+  <body>
+    <div id="g1"></div>
+    <div id="g2"></div>
+    <div id="g3"></div>
+    <div id="g4"></div>
+    <div id="g5"></div>
+  </body>
+</html>
