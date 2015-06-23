@@ -32,7 +32,7 @@
       window.onload = function(){
       var g1 = new JustGage({
         id: "g1",
-        value: getRandomInt(0, 100),
+        value: 0,
         min: 0,
         max: 100,
         title: "AGHH",
@@ -47,7 +47,7 @@
 
       var g2 = new JustGage({
         id: "g2",
-        value: getRandomInt(0, 100),
+        value: 0,
         min: 0,
         max: 100,
         title: "BAD",
@@ -62,7 +62,7 @@
 
       var g3 = new JustGage({
         id: "g3",
-        value: getRandomInt(0, 100),
+        value: 0,
         min: 0,
         max: 100,
         title: "MEHHH",
@@ -77,7 +77,7 @@
 
       var g4 = new JustGage({
         id: "g4",
-        value: getRandomInt(0, 100),
+        value: 0,
         min: 0,
         max: 100,
         title: "YES!!",
@@ -93,7 +93,7 @@
 
       var g5 = new JustGage({
         id: "g5",
-        value: getRandomInt(0, 100),
+        value: 0,
         min: 0,
         max: 100,
         title: "AWESOME!!",
@@ -107,16 +107,20 @@
 
 
         setInterval(function() {
-          g1.refresh(getRandomInt(0, 100));
-          g2.refresh(getRandomInt(0, 100));
-          g3.refresh(getRandomInt(0, 100));
-          g4.refresh(getRandomInt(0, 100));
-          g5.refresh(getRandomInt(0, 100));
+          var t1 = getRandomInt(0, 100)
+          g5.refresh(t1);
+          var t2 = getRandomInt(0, 100-t1)
+          g4.refresh(t2);
+          var t3 = getRandomInt(0, 100-(t1+t2))
+          g3.refresh(t3);
+          var t4 = getRandomInt(0, 100-(t1+t2+t3))
+          g2.refresh(t4);
+          g1.refresh(100-(t1+t2+t3+t4));
         }, 2500);
       };
 
       var myFirebaseRef = new Firebase("https://mediadortv.firebaseio.com/");
-      
+
       myFirebaseRef.on("value", function(snapshot) {
         console.log(snapshot.val());
       }, function (errorObject) {
