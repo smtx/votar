@@ -7,6 +7,230 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <style>
+      body {
+        text-align: center;
+      }
+
+      #g1, #g2, #g3, #g4, #g5, #g6 {
+        width:200px; height:160px;
+        display: inline-block;
+        margin: 1em;
+        cursor: pointer;
+      }
+
+      p {
+        display: block;
+        width: 450px;
+        margin: 2em auto;
+        text-align: left;
+      }
+    </style>
+
+    <script src="javascripts/raphael.2.1.0.min.js"></script>
+    <script src="javascripts/justgage.1.0.1.min.js"></script>
+    <script>
+      var g1, g2, g3, g4, g5, g6;
+      var v1, v2, v3, v4, v5, v6 = 0;
+
+      window.onload = function(){
+        g1 = new JustGage({
+          id: "g1",
+          value: 0,
+          min: 0,
+          max: 100,
+          title: "AGHH",
+          label: "%",
+          showMinMax: false,
+          startAnimationTime: 2000,
+          startAnimationType: ">",
+          refreshAnimationTime: 1000,
+          refreshAnimationType: "bounce"
+
+        });
+
+        g2 = new JustGage({
+          id: "g2",
+          value: 0,
+          min: 0,
+          max: 100,
+          title: "BAD",
+          label: "%",
+          showMinMax: false,
+          startAnimationTime: 2000,
+          startAnimationType: ">",
+          refreshAnimationTime: 1000,
+          refreshAnimationType: "bounce"
+
+        });
+
+        g3 = new JustGage({
+          id: "g3",
+          value: 0,
+          min: 0,
+          max: 100,
+          title: "MEHHH",
+          label: "%",
+          showMinMax: false,
+          startAnimationTime: 2000,
+          startAnimationType: ">",
+          refreshAnimationTime: 1000,
+          refreshAnimationType: "bounce"
+
+        });
+
+        g4 = new JustGage({
+          id: "g4",
+          value: 0,
+          min: 0,
+          max: 100,
+          title: "YES!!",
+          label: "%",
+          showMinMax: false,
+          startAnimationTime: 2000,
+          startAnimationType: ">",
+          refreshAnimationTime: 1000,
+          refreshAnimationType: "bounce"
+
+        });
+
+
+        g5 = new JustGage({
+          id: "g5",
+          value: 0,
+          min: 0,
+          max: 100,
+          title: "AWESOME!!",
+          label: "%",
+          showMinMax: false,
+          startAnimationTime: 2000,
+          startAnimationType: ">",
+          refreshAnimationTime: 1000,
+          refreshAnimationType: "bounce"
+        });
+
+
+          // setInterval(function() {
+          //   var t1 = getRandomInt(0, 100)
+          //   g5.refresh(t1);
+          //   var t2 = getRandomInt(0, 100-t1)
+          //   g4.refresh(t2);
+          //   var t3 = getRandomInt(0, 100-(t1+t2))
+          //   g3.refresh(t3);
+          //   var t4 = getRandomInt(0, 100-(t1+t2+t3))
+          //   g2.refresh(t4);
+          //   g1.refresh(100-(t1+t2+t3+t4));
+          // }, 2500);
+
+          var fb = new Firebase("https://votar.firebaseio.com/poll1/");
+
+          // monitors changes and updates UI
+          fb.child('g1').child('counter').on('value', updateG1);
+          fb.child('g2').child('counter').on('value', updateG2);
+          fb.child('g3').child('counter').on('value', updateG3);
+          fb.child('g4').child('counter').on('value', updateG4);
+          fb.child('g5').child('counter').on('value', updateG5);
+          // fb.on('value', updatePre); //For demo purposes
+
+          // creates a new, incremental record
+          $('#g1').on('click', incId1);
+          $('#g2').on('click', incId2);
+          $('#g3').on('click', incId3);
+          $('#g4').on('click', incId4);
+          $('#g5').on('click', incId5);
+
+          var errId = 0;
+          // creates a new, incremental record
+          function incId1(){
+            incId('g1')
+          }
+          function incId2(){
+            incId('g2')
+          }
+          function incId3(){
+            incId('g3')
+          }
+          function incId4(){
+            incId('g4')
+          }
+          function incId5(){
+            incId('g5')
+          }
+          function incId(op) {
+              // increment the counter
+              fb.child(op).child('counter').transaction(function(currentValue) {
+                  return (currentValue||0) + 1
+              }, function(err, committed, ss) {
+                  if( err ) {
+                     setError(err);
+                  }
+                  else if( committed ) {
+                     // if counter update succeeds, then create record
+                     // probably want a recourse for failures too
+                     addRecord(ss.val());
+                  }
+              });
+          }
+
+          // creates new incremental record
+          function addRecord(id) {
+              setTimeout(function() {
+                 fb.child('recs').child('rec'+id).set('rec #'+id, function(err) {
+                    err && setError(err);
+                 });
+              });
+          }
+
+          function actualizaPorcentajes(){
+            var t = v1+v2+v3+v4+v5;
+            var v = parseInt(v1 * 100/t);
+            g1.refresh(v||0);
+            var v = parseInt(v2 * 100/t);
+            g2.refresh(v||0);
+            var v = parseInt(v3 * 100/t);
+            g3.refresh(v||0);
+            var v = parseInt(v4 * 100/t);
+            g4.refresh(v||0);
+            var v = parseInt(v5 * 100/t);
+            g5.refresh(v||0);
+          }
+          function updateG1(ss) {
+            v1 = ss.val();
+            actualizaPorcentajes();
+          }
+          function updateG2(ss) {
+            v2 = ss.val();
+            actualizaPorcentajes();
+          }
+          function updateG3(ss) {
+            v3 = ss.val();
+            actualizaPorcentajes();
+          }
+          function updateG4(ss) {
+            v4 = ss.val();
+            actualizaPorcentajes();
+          }
+          function updateG5(ss) {
+            v5 = ss.val();
+            actualizaPorcentajes();
+          }
+
+          // for demo purposes
+          function updatePre(ss) {
+             $('#data').text(JSON.stringify(ss.val(), null, 2));
+          }
+
+          // resets the data
+          $('#reset').on('click', function() {
+             fb.remove();
+          });
+      };
+
+
+
+    </script>
 
     <title>Votar by smtx</title>
   </head>
@@ -32,9 +256,18 @@
 <a id="votar-was-made-in-javascript-with-firebase-db" class="anchor" href="#votar-was-made-in-javascript-with-firebase-db" aria-hidden="true"><span class="octicon octicon-link"></span></a>Votar was made in javascript with firebase DB</h3>
 
 <p>This is the running example: </p>
+
+<div id="g1"></div>
+<div id="g2"></div>
+<div id="g3"></div>
+<div id="g4"></div>
+<div id="g5"></div>
+<div id="data"></div>
+<button id="reset">Reset</button>
+
       </section>
     </div>
 
-    
+
   </body>
 </html>
